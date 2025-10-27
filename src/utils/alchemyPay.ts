@@ -86,8 +86,7 @@ export type Token = {
 }
 
 // Use current origin for serverless functions on Vercel
-const BASE_URL =
-  typeof window !== 'undefined' ? window.location.origin : process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001'
+const BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001'
 
 export async function getOnRampUrl(params: {
   address: string
