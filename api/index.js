@@ -258,7 +258,7 @@ const bootstrap = async () => {
   })
 
   // Alchemy Pay API routes
-  app.get('/api/fiat/list', (req, res, next) => {
+  app.get('/fiat/list', (req, res, next) => {
     getFiatList()
       .then(fiats => {
         res.json(fiats)
@@ -268,7 +268,7 @@ const bootstrap = async () => {
       })
   })
 
-  app.get('/api/crypto/list', (req, res, next) => {
+  app.get('/crypto/list', (req, res, next) => {
     getCryptoList()
       .then(cryptos => {
         res.json(cryptos)
@@ -278,7 +278,7 @@ const bootstrap = async () => {
       })
   })
 
-  app.post('/api/quotes', (req, res, next) => {
+  app.post('/quotes', (req, res, next) => {
     getQuote(req.body)
       .then(quote => {
         res.json(quote)
