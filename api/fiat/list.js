@@ -1,4 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+const dotenv = require('dotenv')
+dotenv.config()
+
 const crypto = require('crypto')
 const axios = require('axios')
 
@@ -115,6 +118,12 @@ export default async function handler(req, res) {
     const path = '/open/api/v4/merchant/fiat/list'
     const body = ''
     const sign = getApiSignature(timestamp, method, path, body, APP_SECRET)
+
+    console.log('url', `${BASE_API_URL}/fiat/list`)
+    console.log('timestamp', timestamp)
+    console.log('sign', sign)
+    console.log('appid', APP_ID)
+    console.log('appsecret', APP_SECRET)
 
     const response = await axios.get(`${BASE_API_URL}/fiat/list`, {
       headers: {

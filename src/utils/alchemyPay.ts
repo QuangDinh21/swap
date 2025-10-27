@@ -173,6 +173,6 @@ export const groupFiatDataByCountry = (response: FiatResponse): Country[] => {
 }
 
 export async function getCryptoList(): Promise<CryptoResponse | null> {
-  const res = await fetch('http://localhost:3001/api/crypto/list')
+  const res = await fetch(`${BASE_URL}/api/crypto/list`)
   return res.json()
 }

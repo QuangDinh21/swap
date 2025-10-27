@@ -1,4 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+const dotenv = require('dotenv')
+dotenv.config()
+
 const crypto = require('crypto')
 
 const APP_ID = process.env.REACT_APP_ALCHEMY_PAY_APP_ID || ''

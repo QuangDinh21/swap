@@ -1,4 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+const dotenv = require('dotenv')
+dotenv.config()
+
 const crypto = require('crypto')
 const axios = require('axios')
 
