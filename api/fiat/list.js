@@ -119,7 +119,7 @@ export default async function handler(req, res) {
     const body = ''
     const sign = getApiSignature(timestamp, method, path, body, APP_SECRET)
 
-    console.log('url', `${BASE_API_URL}/fiat/list`)
+    console.log('url', `${BASE_API_URL}${path}`)
     console.log('timestamp', timestamp)
     console.log('sign', sign)
     console.log('appid', APP_ID)

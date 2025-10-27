@@ -118,7 +118,7 @@ export default async function handler(req, res) {
     const body = ''
     const sign = getApiSignature(timestamp, method, path, body, APP_SECRET)
 
-    const response = await axios.get(`${BASE_API_URL}/crypto/list`, {
+    const response = await axios.get(`${BASE_API_URL}${path}`, {
       headers: {
         'Content-Type': 'application/json',
         appid: APP_ID,

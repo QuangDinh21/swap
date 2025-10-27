@@ -118,7 +118,7 @@ export default async function handler(req, res) {
     const body = JSON.stringify(req.body)
     const sign = getApiSignature(timestamp, method, path, body, APP_SECRET)
 
-    const response = await axios.post(`${BASE_API_URL}/quotes`, req.body, {
+    const response = await axios.post(`${BASE_API_URL}${path}`, req.body, {
       headers: {
         'Content-Type': 'application/json',
         appid: APP_ID,
