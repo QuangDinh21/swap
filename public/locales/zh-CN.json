@@ -87,5 +87,7 @@
   "completeDescription": "前往 {{ provider }} 标签继续。现在关闭这个模态是安全的。",
   "completeTerms": "继续，你同意遵守 {{ provider }} 的服务条款和隐私政策，如适用。",
   "amountMustBeAtLeast": "数量必须至少为 {{ amount }} {{ currency }}",
-  "amountMustNotExceed": "数量不能超过 {{ amount }} {{ currency }}"
+  "amountMustNotExceed": "数量不能超过 {{ amount }} {{ currency }}",
+  "failedToGetQuote": "获取报价失败！",
+  "pleaseContinueIfYouWantToContinue": "请点击继续按钮如果您想继续。"
 }

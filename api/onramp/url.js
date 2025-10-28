@@ -1,7 +1,38 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const { getOnRampUrl } = require('../../backend/common')
+const dotenv = require('dotenv')
+dotenv.config()
 
-module.exports = async function handler(req, res) {
+const { getStringToSign, generateSignature } = require('../utils')
+
+const APP_ID = process.env.REACT_APP_ALCHEMY_PAY_APP_ID || ''
+const APP_SECRET = process.env.REACT_APP_ALCHEMY_PAY_APP_SECRET || ''
+const BASE_RAMP_URL = process.env.REACT_APP_ALCHEMY_PAY_BASE_RAMP_URL || ''
+const ON_RAMP_REQUEST_PATH = '/index/rampPageBuy'
+
+function getOnRampUrl(params) {
+  const timestamp = String(Date.now())
+
+  const paramsToSign = {
+    address: params.address,
+    crypto: params.crypto,
+    fiat: params.fiat,
+    fiatAmount: params.fiatAmount,
+    merchantOrderNo: params.merchantOrderNo,
+    network: params.network,
+    timestamp: timestamp,
+    appId: APP_ID,
+    redirectUrl: params.redirectUrl
+  }
+
+  const rawDataToSign = getStringToSign(paramsToSign)
+  const requestPathWithParams = ON_RAMP_REQUEST_PATH + '?' + rawDataToSign
+  const onRampSignature = generateSignature(timestamp, 'GET', requestPathWithParams, APP_SECRET)
+
+  const finalLink = `${BASE_RAMP_URL}?${rawDataToSign}&sign=${onRampSignature}`
+  return finalLink
+}
+
+async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Credentials', true)
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS')
@@ -21,3 +52,6 @@ module.exports = async function handler(req, res) {
     res.status(500).json({ error: 'Failed to generate onramp URL' })
   }
 }
+
+module.exports = { getOnRampUrl, handler }
+module.exports.default = handler

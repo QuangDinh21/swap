@@ -103,5 +103,7 @@
   "completeDescription": "Mai departe la tab-ul {{ provider }} pentru a continua. Este sigur să închizi acest modal acum.",
   "completeTerms": "Continuând, ești de acord să fii supus termenilor de serviciu și politicii de confidențialitate cu {{ provider }}, după cum este aplicabil.",
   "amountMustBeAtLeast": "Cantitatea trebuie să fie cel puțin {{ amount }} {{ currency }}",
-  "amountMustNotExceed": "Cantitatea nu trebuie să depășească {{ amount }} {{ currency }}"
+  "amountMustNotExceed": "Cantitatea nu trebuie să depășească {{ amount }} {{ currency }}",
+  "failedToGetQuote": "Eroare la obținerea cotării!",
+  "pleaseContinueIfYouWantToContinue": "Vă rugăm să faceți clic pe butonul Continuă dacă doriți să continuați."
 }

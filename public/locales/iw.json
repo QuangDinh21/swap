@@ -87,5 +87,7 @@
   "completeDescription": "עבור ללשונית {{ provider }} כדי להמשיך. זה בטוח לסגור את המודל הזה עכשיו.",
   "completeTerms": "על ידי המשך, אתה מסכם להיות תחת תנאי השירות ומדיניות הפרטיות עם {{ provider }}, כפי שמתאימה.",
   "amountMustBeAtLeast": "הסכום חייב להיות לפחות {{ amount }} {{ currency }}",
-  "amountMustNotExceed": "הסכום לא יכול לעלות על {{ amount }} {{ currency }}"
+  "amountMustNotExceed": "הסכום לא יכול לעלות על {{ amount }} {{ currency }}",
+  "failedToGetQuote": "שגיאה בקבלת הצעת מחיר!",
+  "pleaseContinueIfYouWantToContinue": "אנא לחץ על כפתור המשך אם אתה רוצה להמשיך."
 }

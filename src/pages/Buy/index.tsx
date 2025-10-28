@@ -44,8 +44,9 @@ const parseUrlParams = () => {
   const urlParams = new URLSearchParams(searchParams)
   return {
     amount: urlParams.get('amount') || '',
-    token: urlParams.get('token') || '',
-    fiat: urlParams.get('fiat') || ''
+    crypto: urlParams.get('crypto') || '',
+    fiat: urlParams.get('fiat') || '',
+    network: urlParams.get('network') || ''
   }
 }
 
@@ -168,6 +169,7 @@ const ErrorMessage = styled.div`
   font-size: 12px;
   margin-top: 8px;
   text-align: center;
+  white-space: pre-line;
 `
 
 const AssetSelector = styled.button`
@@ -200,7 +202,7 @@ const Buy = () => {
   const urlParams = parseUrlParams()
 
   const isAmountLocked = Boolean(urlParams.amount && urlParams.amount.trim() !== '')
-  const isTokenLocked = Boolean(urlParams.token && urlParams.token.trim() !== '')
+  const isTokenLocked = Boolean(urlParams.crypto && urlParams.crypto.trim() !== '')
   const isCountryLocked = Boolean(urlParams.fiat && urlParams.fiat.trim() !== '')
 
   const [amount, setAmount] = useState(urlParams.amount)
@@ -223,30 +225,7 @@ const Buy = () => {
   const parsedAmount = Number(amount || 0)
   const debouncedAmount = useDebounce(amount, 500)
 
-  const validateAmount = useCallback(
-    (amount: number, country: Country | null) => {
-      if (!country || amount <= 0) {
-        setAmountError(null)
-        return true
-      }
-
-      if (amount < country.payMin) {
-        setAmountError(t('amountMustBeAtLeast', { amount: country.payMin, currency: country.currency }))
-        return false
-      }
-
-      if (amount > country.payMax) {
-        setAmountError(t('amountMustNotExceed', { amount: country.payMax, currency: country.currency }))
-        return false
-      }
-
-      setAmountError(null)
-      return true
-    },
-    [t]
-  )
-
-  const canContinue = account && parsedAmount > 0 && !amountError
+  const canContinue = account && parsedAmount > 0
 
   const openOnRampUrl = useCallback(async () => {
     if (!account) {
@@ -325,17 +304,36 @@ const Buy = () => {
           const tokens = response.data
           setTokens(tokens)
 
-          const tokenParam = urlParams.token
-          if (tokenParam && tokenParam.trim() !== '') {
-            const foundToken = tokens.find(token => token.crypto.toLowerCase() === tokenParam.toLowerCase())
-            if (foundToken) {
-              setSelectedToken(foundToken)
-            } else if (tokens.length > 0) {
-              setSelectedToken(tokens[0])
-            }
-          } else if (tokens.length > 0) {
-            setSelectedToken(tokens[0])
+          const tokenParam = urlParams.crypto
+          const networkParam = urlParams.network
+
+          let selectedToken: Token | null = null
+
+          if (networkParam && networkParam.trim() !== '' && tokenParam && tokenParam.trim() !== '') {
+            selectedToken =
+              tokens.find(
+                token =>
+                  token.crypto.toLowerCase() === tokenParam.toLowerCase() &&
+                  token.network.toLowerCase() === networkParam.toLowerCase()
+              ) || null
+          } else if (networkParam && networkParam.trim() !== '' && (!tokenParam || tokenParam.trim() === '')) {
+            selectedToken = tokens.find(token => token.network.toLowerCase() === networkParam.toLowerCase()) || null
+          } else if (tokenParam && tokenParam.trim() !== '' && (!networkParam || networkParam.trim() === '')) {
+            selectedToken = tokens.find(token => token.crypto.toLowerCase() === tokenParam.toLowerCase()) || null
           }
+
+          if (!selectedToken) {
+            const defaultToken = tokens.find(
+              token => token.crypto.toUpperCase() === 'JOC' && token.network.toUpperCase() === 'JOC'
+            )
+            selectedToken = defaultToken || null
+          }
+
+          if (!selectedToken && tokens.length > 0) {
+            selectedToken = tokens[0]
+          }
+
+          setSelectedToken(selectedToken)
         }
       } catch (error) {
         console.error(error)
@@ -344,7 +342,7 @@ const Buy = () => {
       }
     }
     fetchCryptoList()
-  }, [urlParams.fiat, urlParams.token])
+  }, [urlParams.fiat, urlParams.crypto, urlParams.network])
 
   useEffect(() => {
     const handleUrlChange = () => {
@@ -362,13 +360,7 @@ const Buy = () => {
       try {
         if (!debouncedAmount || !selectedCountry) {
           setPurchaseQuote(null)
-        }
-
-        const amountNum = Number(debouncedAmount)
-        const isValidAmount = validateAmount(amountNum, selectedCountry)
-
-        if (!isValidAmount) {
-          setPurchaseQuote(null)
+          setAmountError(null)
           return
         }
 
@@ -380,6 +372,14 @@ const Buy = () => {
             network: selectedToken.network,
             amount: debouncedAmount
           })
+
+          if (!quote || !quote.success) {
+            setPurchaseQuote(null)
+            setAmountError((quote?.returnMsg || t('failedToGetQuote')) + '\n' + t('pleaseContinueIfYouWantToContinue'))
+            return
+          }
+
+          setAmountError(null)
           setPurchaseQuote(quote)
         }
       } catch (error) {
@@ -389,7 +389,7 @@ const Buy = () => {
       }
     }
     fetchQuote()
-  }, [selectedCountry, selectedToken, debouncedAmount, validateAmount])
+  }, [selectedCountry, selectedToken, debouncedAmount, t])
 
   return (
     <PageContainer>

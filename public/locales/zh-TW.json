@@ -87,5 +87,7 @@
   "completeDescription": "前往 {{ provider }} 標籤繼續。現在關閉這個模態是安全的。",
   "completeTerms": "繼續，你同意遵守 {{ provider }} 的服務條款和隱私政策，如適用。",
   "amountMustBeAtLeast": "數量必須至少為 {{ amount }} {{ currency }}",
-  "amountMustNotExceed": "數量不能超過 {{ amount }} {{ currency }}"
+  "amountMustNotExceed": "數量不能超過 {{ amount }} {{ currency }}",
+  "failedToGetQuote": "獲取報價失敗！",
+  "pleaseContinueIfYouWantToContinue": "請點擊繼續按鈕如果您想繼續。"
 }

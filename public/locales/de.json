@@ -101,5 +101,7 @@
   "completeDescription": "Gehe zum {{ provider }}-Tab, um fortzufahren. Es ist sicher, dieses Modal jetzt zu schließen.",
   "completeTerms": "Durch Fortfahren erkennst du an, dass du den Nutzungsbedingungen und der Datenschutzrichtlinie mit {{ provider }}, wie jeweilig anwendbar, zustimmen musst.",
   "amountMustBeAtLeast": "Der Betrag muss mindestens {{ amount }} {{ currency }} sein",
-  "amountMustNotExceed": "Der Betrag darf nicht mehr als {{ amount }} {{ currency }} sein"
+  "amountMustNotExceed": "Der Betrag darf nicht mehr als {{ amount }} {{ currency }} sein",
+  "failedToGetQuote": "Fehler beim Abrufen des Angebots!",
+  "pleaseContinueIfYouWantToContinue": "Bitte klicken Sie auf Fortfahren, wenn Sie fortfahren möchten."
 }

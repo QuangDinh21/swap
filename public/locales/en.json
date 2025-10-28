@@ -103,5 +103,7 @@
   "completeDescription": "Go to the {{ provider }} tab to continue. It's safe to close this modal now.",
   "completeTerms": "By continuing, you acknowledge that you'll be subject to the Terms of Service and Privacy Policy with {{ provider }}, as applicable.",
   "amountMustBeAtLeast": "Amount must be at least {{ amount }} {{ currency }}",
-  "amountMustNotExceed": "Amount must not exceed {{ amount }} {{ currency }}"
+  "amountMustNotExceed": "Amount must not exceed {{ amount }} {{ currency }}",
+  "failedToGetQuote": "Failed to get quote!",
+  "pleaseContinueIfYouWantToContinue": "Please click continue button if you want to continue."
 }

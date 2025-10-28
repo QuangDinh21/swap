@@ -52,6 +52,7 @@
     "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-react-hooks": "^4.0.0",
     "ethers": "^5.0.7",
+    "http-proxy-middleware": "^3.0.5",
     "i18next": "^15.0.9",
     "i18next-browser-languagedetector": "^3.0.1",
     "i18next-xhr-backend": "^2.0.1",
@@ -97,9 +98,9 @@
   },
   "scripts": {
     "start": "NODE_OPTIONS=--openssl-legacy-provider react-scripts start",
-    "dev:backend": "node backend/server.js",
+    "dev:backend": "node server.js",
     "dev": "concurrently \"npm run dev:backend\" \"npm run start\"",
-    "build": "NODE_OPTIONS=--openssl-legacy-provider react-scripts build && cp -r backend build/ && cp -r api build/",
+    "build": "NODE_OPTIONS=--openssl-legacy-provider react-scripts build",
     "test": "NODE_OPTIONS=--openssl-legacy-provider react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "integration-test": "start-server-and-test 'serve build -l 3000' http://localhost:3000 'cypress run'"

@@ -99,5 +99,7 @@
   "completeDescription": "Vai al tab di {{ provider }} per continuare. È sicuro chiudere questo modal ora.",
   "completeTerms": "Continuando, accetti di essere soggetto ai Termini di Servizio e alla Privacy Policy con {{ provider }}, come applicabile.",
   "amountMustBeAtLeast": "Il montante deve essere almeno {{ amount }} {{ currency }}",
-  "amountMustNotExceed": "Il montante non deve superare {{ amount }} {{ currency }}"
+  "amountMustNotExceed": "Il montante non deve superare {{ amount }} {{ currency }}",
+  "failedToGetQuote": "Errore nell'ottenere la cotazione!",
+  "pleaseContinueIfYouWantToContinue": "Per favore, fai clic sul pulsante Continua se vuoi continuare."
 }

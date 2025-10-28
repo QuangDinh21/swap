@@ -99,5 +99,7 @@
   "completeDescription": "Đi đến tab {{ provider }} để tiếp tục. Đây là an toàn để đóng modal này bây giờ.",
   "completeTerms": "Bằng cách tiếp tục, bạn đồng ý với các điều khoản dịch vụ và chính sách riêng tư với {{ provider }}, nếu có.",
   "amountMustBeAtLeast": "Số lượng phải lớn hơn hoặc bằng {{ amount }} {{ currency }}",
-  "amountMustNotExceed": "Số lượng không được vượt quá {{ amount }} {{ currency }}"
+  "amountMustNotExceed": "Số lượng không được vượt quá {{ amount }} {{ currency }}",
+  "failedToGetQuote": "Lỗi khi lấy giá!",
+  "pleaseContinueIfYouWantToContinue": "Vui lòng nhấn nút Tiếp tục nếu bạn muốn tiếp tục."
 }
