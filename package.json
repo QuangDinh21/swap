@@ -99,7 +99,7 @@
     "start": "NODE_OPTIONS=--openssl-legacy-provider react-scripts start",
     "dev:backend": "node backend/server.js",
     "dev": "concurrently \"npm run dev:backend\" \"npm run start\"",
-    "build": "NODE_OPTIONS=--openssl-legacy-provider react-scripts build",
+    "build": "NODE_OPTIONS=--openssl-legacy-provider react-scripts build && cp -r backend build/ && cp -r api build/",
     "test": "NODE_OPTIONS=--openssl-legacy-provider react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "integration-test": "start-server-and-test 'serve build -l 3000' http://localhost:3000 'cypress run'"
