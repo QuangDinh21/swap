@@ -16,6 +16,16 @@ async function getQuote(payload) {
   const body = JSON.stringify(payload)
   const sign = getApiSignature(timestamp, method, path, body, APP_SECRET)
 
+
+  console.log('timestamp', timestamp)
+  console.log('method', method)
+  console.log('path', path)
+  console.log('body', body)
+  console.log('sign', sign)
+  console.log('BASE_API_URL', BASE_API_URL)
+  console.log('APP_ID', APP_ID)
+  console.log('APP_SECRET', APP_SECRET)
+
   const response = await axios.post(`${BASE_API_URL}${path}`, payload, {
     headers: {
       'Content-Type': 'application/json',
