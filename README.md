@@ -1,160 +1,46 @@
-# X-Swap UI
+# Getting Started with Create React App
 
-A decentralized exchange (DEX) user interface built on Uniswap v2 protocol, supporting multi-chain trading across various blockchain networks including JOC, JOCT, Ethereum Mainnet, Base, Avalanche, and Arbitrum One.
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Features
+## Available Scripts
 
-- **Multi-Chain Support**: Trade tokens across multiple blockchain networks
-- **Uniswap v2 Protocol**: Built on proven decentralized exchange technology
-- **Web3 Integration**: Connect with various wallets including MetaMask, WalletConnect, Portis, and Fortmatic
-- **Token Swapping**: Seamless token-to-token exchanges with automated market making
-- **Liquidity Provision**: Add/remove liquidity to earn trading fees
-- **Responsive Design**: Optimized for both desktop and mobile devices
-- **Multi-Language Support**: Internationalization support with i18next
+In the project directory, you can run:
 
-## Supported Networks
+### `npm start`
 
-- **JOC Network**: Custom blockchain network with native token support
-- **JOCT Network**: JOC testnet environment
-- **Ethereum Mainnet**: Main Ethereum blockchain
-- **Base**: Layer 2 solution by Coinbase
-- **Avalanche**: High-performance blockchain platform
-- **Arbitrum One**: Ethereum Layer 2 scaling solution
-- **Sepolia**: Ethereum testnet for development
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-## Technology Stack
+The page will reload if you make edits.\
+You will also see any lint errors in the console.
 
-- **Frontend**: React 16.13+ with TypeScript
-- **State Management**: Redux Toolkit with Redux LocalStorage
-- **Styling**: Styled Components with Rebass
-- **Web3**: Ethers.js v5 with Web3React connectors
-- **Testing**: Jest with Cypress for E2E testing
-- **Build Tool**: Create React App with custom configurations
+### `npm test`
 
-## Prerequisites
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-- Node.js 18.x
-- Yarn package manager
-- Web3-compatible browser or wallet extension
+### `npm run build`
 
-## Installation
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-1. Clone the repository:
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-```bash
-git clone https://github.com/x-gate-project/x-swap-ui.git
-cd x-swap-ui
-```
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-2. Install dependencies:
+### `npm run eject`
 
-```bash
-yarn install
-```
+**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-3. Configure environment variables:
+If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-```bash
-cp .env.sample .env
-```
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-Edit `.env` file with your network URLs and contract addresses:
+You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-- Network RPC URLs for each supported blockchain
-- Factory and router contract addresses
-- Wrapped token addresses
-- Multicall contract addresses
+## Learn More
 
-## Development
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-Start the development server:
-
-```bash
-yarn start
-```
-
-The application will be available at `http://localhost:3000`
-
-## Build
-
-Create a production build:
-
-```bash
-yarn build
-```
-
-## Testing
-
-Run unit tests:
-
-```bash
-yarn test
-```
-
-Run integration tests:
-
-```bash
-yarn integration-test
-```
-
-## Environment Configuration
-
-The application requires the following environment variables:
-
-### Network URLs
-
-- `REACT_APP_MAINNET_NETWORK_URL`: Ethereum mainnet RPC URL
-- `REACT_APP_JOC_NETWORK_URL`: JOC network RPC URL
-- `REACT_APP_BASE_NETWORK_URL`: Base network RPC URL
-- `REACT_APP_AVALANCHE_NETWORK_URL`: Avalanche network RPC URL
-- `REACT_APP_ARBITRUM_ONE_NETWORK_URL`: Arbitrum One RPC URL
-- `REACT_APP_SEPOLIA_NETWORK_URL`: Sepolia testnet RPC URL
-- `REACT_APP_JOCT_NETWORK_URL`: JOC testnet RPC URL
-
-### Contract Addresses
-
-- Factory, router, wrapped token, and multicall addresses for each network
-
-### External Services
-
-- `REACT_APP_X_GATE_URL`: X-Gate service URL
-- `REACT_APP_DEFAULT_TOKEN_LIST_URL`: Default token list URL
-
-## Deployment
-
-The application can be deployed to Google App Engine using the provided `app.yaml` configuration:
-
-```bash
-gcloud app deploy
-```
-
-## Architecture
-
-- **Components**: Reusable UI components in `src/components/`
-- **Pages**: Main application pages and routing
-- **State**: Redux store configuration and slices
-- **Constants**: Network configurations, contract ABIs, and addresses
-- **Connectors**: Web3 wallet connection logic
-- **Utils**: Helper functions and utilities
-- **Hooks**: Custom React hooks for Web3 interactions
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests for new functionality
-5. Ensure all tests pass
-6. Submit a pull request
-
-## License
-
-This project is licensed under the GPL-3.0-or-later license. See the [LICENSE](LICENSE) file for details.
-
-## Security
-
-This is experimental software. Use at your own risk. Always verify transactions before confirming them in your wallet.
-
-## Support
-
-For support and questions, please open an issue on the GitHub repository.
+To learn React, check out the [React documentation](https://reactjs.org/).
