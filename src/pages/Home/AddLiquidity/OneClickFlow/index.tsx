@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { parseUnits } from 'ethers';
+import { keccak256, parseUnits } from 'ethers';
 import { useAccount, useConfig } from 'wagmi';
 import { switchChain } from 'wagmi/actions';
 import { toast } from 'sonner';
@@ -28,7 +28,7 @@ import TokenSelector from './TokenSelector';
 import SubmitProgress from './SubmitProgress';
 import IncentiveSelector from './IncentiveSelector';
 import { IncentiveKey, Step } from '@/types';
-import { renderBalance } from '@/utils/render.util';
+import { useIncentiveAPR } from '@/hooks/useIncentiveApr';
 
 interface OneClickFlowProps {
   onCompleted?: () => void;
@@ -118,27 +118,13 @@ export default function OneClickFlow({
   };
 
   const onSelectToken = (token: Token) => {
-    setAmount((prev) => {
-      if(isNaN(Number(prev))) {
-        return '';
-      }
-      if(selectedToken.decimals > token.decimals) {
-        return Number(prev).toFixed(token.decimals);
-      }
-      return prev;
-    });
     setSelectedToken(token);
     setShowTokenSelector(false);
   };
 
   const onAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const amount = e.target.value
-        .replace(/[^0-9.]/g, '') // Removes non-numeric characters or periods
-        .replace(/^0+(\d)/, '$1') // Remove leading 0 unless a decimal number
-        .replace(/^(\.)/, '0$1') // If it starts with a period, add a leading 0
-        .replace(/(\..*?)\./g, '$1') // Only one dot is allowed;
-        .replace(new RegExp(`(\\.\\d{${selectedToken.decimals}})\\d+`, 'g'), '$1'); // Allow only up to token.decimal
-    setAmount(amount);
+    const value = e.target.value;
+    setAmount(value);
   };
 
   const onMaxClick = () => {
@@ -448,12 +434,14 @@ export default function OneClickFlow({
                   <div className="flex justify-between items-center text-sm">
                     <span className="text-slate-600">
                       Balance:{' '}
-                      {renderBalance(parseUnits((currentBalance || '0'), selectedToken.decimals), { decimals: selectedToken.decimals })}{' '}
+                      {parseFloat(currentBalance || '0').toFixed(
+                        selectedToken.symbol === 'ETH' ? 6 : 2
+                      )}{' '}
                       {selectedToken.symbol}
                     </span>
                     {selectedToken.symbol !== 'ETH' && amount && (
                       <span className="text-slate-600">
-                        ≈ ${renderBalance(parseUnits(amount, selectedToken.decimals), { decimals: selectedToken.decimals })} USD
+                        ≈ ${parseFloat(amount).toFixed(2)} USD
                       </span>
                     )}
                   </div>

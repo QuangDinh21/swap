@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/Icons';
 import {
   formatDate,
+  calculateIncentiveAPR,
   getIncentiveKey,
 } from '@/utils/common';
 import { useStakingData } from '@/hooks/useStakingData';
@@ -25,7 +26,7 @@ import { keccak256 } from 'ethers';
 import { useDataRefetch } from '@/contexts/DataRefetchContext';
 import { useStaker } from '@/hooks/useStaker';
 import { usePositionManager } from '@/hooks/usePositionManager';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { switchChain } from 'wagmi/actions';
 import { chain } from '@/config/wagmi';
@@ -46,7 +47,7 @@ function IncentiveCard({
   const reward = Number(incentive.reward) / 1e18;
 
   // Get staking data for this incentive to calculate correct APR
-  useIncentiveStakingData(
+  const { totalStakedValue } = useIncentiveStakingData(
     keccak256(getIncentiveKey(incentive))
   );
 
@@ -97,13 +98,12 @@ function PositionCard({
   isStaked,
   onStake,
   isStaking = false,
-  isIncentiveLive = true,
 }: {
   position: any;
   isStaked: boolean;
   onSelect: () => void;
   isSelected: boolean;
-  isIncentiveLive: boolean;
+  showStakeButton?: boolean;
   onStake: () => void;
   isStaking: boolean;
 }) {
@@ -151,10 +151,10 @@ function PositionCard({
             {position.description}
           </div>
           <Badge variant={isStaked ? 'success' : 'warning'} className="text-xs">
-            {isStaked ? 'Earning Rewards' : isIncentiveLive ? 'Ready to Stake' : 'Selected incentive is ended'}
+            {isStaked ? 'Earning Rewards' : 'Ready to Stake'}
           </Badge>
         </div>
-        {!isStaked && isIncentiveLive && (
+        {!isStaked && (
           <Button
             size="sm"
             onClick={(e) => {
@@ -219,23 +219,18 @@ export default function ManagePosition() {
     fetchRewards?: boolean,
     fetchUserPosition?: boolean
   ) => {
+    if (fetchStakeInfo) {
+      await fetchStakeInfos(selectedIncentive);
+    }
     if (fetchRewards) {
-      await fetchStakedRewards();
       await fetchUnstakedRewards();
+      await fetchStakedRewards();
     }
     if (fetchUserPosition) {
       await fetchUserPositions();
     }
-    if (fetchStakeInfo) {
-      await fetchStakeInfos(selectedIncentive);
-    }
     triggerRefetchStakingData();
   };
-
-  const isSelectedIncentiveLive = useMemo(() => {
-    if(!selectedIncentive) return false;
-    return Math.floor(new Date().getTime() / 1000) <= selectedIncentive.endTime;
-  }, [selectedIncentive]);
 
   useEffect(() => {
     if (!poolData.poolAddress) {
@@ -261,8 +256,6 @@ export default function ManagePosition() {
     setStakedTokenId(tokenId);
     if (isStaked) {
       await fetchStakedRewards();
-    } else {
-      await fetchUnstakedRewards();
     }
   };
 
@@ -297,8 +290,8 @@ export default function ManagePosition() {
         tokenId: BigInt(tokenId!),
         data: getIncentiveKey(selectedIncentive),
       });
-      await handleTransactionSuccess(true, true, true);
       toast.info('Position is staked successfully!');
+      await handleTransactionSuccess(true, true, true);
     } catch (error: any) {
       toast.error(error.shortMessage || 'Failed to stake. Please try again.');
     } finally {
@@ -318,8 +311,8 @@ export default function ManagePosition() {
         key: selectedIncentive,
         tokenId: BigInt(tokenId),
       });
-      await handleTransactionSuccess(true, true, false);
       toast.info('Position is staked successfully!');
+      await handleTransactionSuccess(true, true, false);
     } catch (error: any) {
       toast.error(error.shortMessage || 'Failed to stake. Please try again.');
     } finally {
@@ -339,8 +332,8 @@ export default function ManagePosition() {
         key: selectedIncentive,
         tokenId: BigInt(tokenId),
       });
-      await handleTransactionSuccess(true, true, false);
       toast.info('Position is unstaked successfully!');
+      await handleTransactionSuccess(true, true, false);
     } catch (error: any) {
       toast.error(error.shortMessage || 'Failed to unstake. Please try again.');
     } finally {
@@ -354,8 +347,8 @@ export default function ManagePosition() {
     setIsClaiming(true);
     try {
       await claimReward();
-      await handleTransactionSuccess(false, true, false);
       toast.info('Rewards are claimed successfully!');
+      await handleTransactionSuccess(false, true, false);
     } catch (error: any) {
       toast.error(error.shortMessage || 'Failed to claim. Please try again.');
     } finally {
@@ -371,8 +364,8 @@ export default function ManagePosition() {
       await withdrawToken({
         tokenId: BigInt(tokenId),
       });
-      await handleTransactionSuccess(true, true, true);
       toast.info('Position is withdrawn successfully!');
+      await handleTransactionSuccess(true, true, true);
     } catch (error: any) {
       toast.error(
         error.shortMessage || 'Failed to withdraw. Please try again.'
@@ -462,7 +455,6 @@ export default function ManagePosition() {
                         position={position}
                         isStaked={false}
                         isSelected={selectedUserTokenId === position.value}
-                        isIncentiveLive={isSelectedIncentiveLive}
                         onSelect={() =>
                           handleUserPositionSelected(position.value)
                         }
@@ -514,7 +506,6 @@ export default function ManagePosition() {
                         key={position.value}
                         position={position}
                         isStaked={isStaked}
-                        isIncentiveLive={isSelectedIncentiveLive}
                         isSelected={stakedTokenId === position.value}
                         onSelect={() =>
                           handleStakerPositionSelected(position.value, isStaked)

@@ -3,14 +3,11 @@ import { Input, InputProps } from './Input';
 import { Button } from './Button';
 import { cn } from '../../utils/common';
 import { TOKEN_LOGOS } from '../../config/constants';
-import { parseUnits } from 'ethers';
-import { renderBalance } from '@/utils/render.util';
 
 export interface TokenInputProps
   extends Omit<InputProps, 'rightAddon' | 'error'> {
   tokenSymbol: string;
   tokenIcon?: React.ReactNode;
-  tokenDecimals: number;
   balance?: string;
   onMaxClick?: () => void;
   usdValue?: string;
@@ -21,7 +18,6 @@ export interface TokenInputProps
 export function TokenInput({
   tokenSymbol,
   tokenIcon,
-  tokenDecimals,
   balance,
   onMaxClick,
   usdValue,
@@ -109,7 +105,7 @@ export function TokenInput({
         <div className="flex justify-between items-center text-xs">
           {showBalance && balance && (
             <span className="text-slate-500">
-              Balance: {renderBalance(parseUnits(balance, tokenDecimals), { decimals: tokenDecimals })} {tokenSymbol}
+              Balance: {balance} {tokenSymbol}
             </span>
           )}
           {showUsdValue && usdValue && (
