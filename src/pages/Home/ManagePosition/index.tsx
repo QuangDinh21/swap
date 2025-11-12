@@ -16,7 +16,6 @@ import {
 } from '@/components/ui/Icons';
 import {
   formatDate,
-  calculateIncentiveAPR,
   getIncentiveKey,
 } from '@/utils/common';
 import { useStakingData } from '@/hooks/useStakingData';
@@ -47,7 +46,7 @@ function IncentiveCard({
   const reward = Number(incentive.reward) / 1e18;
 
   // Get staking data for this incentive to calculate correct APR
-  const { totalStakedValue } = useIncentiveStakingData(
+  useIncentiveStakingData(
     keccak256(getIncentiveKey(incentive))
   );
 

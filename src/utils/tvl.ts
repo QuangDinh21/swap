@@ -33,10 +33,10 @@ export function getLargerInTicks(
 }
 
 export function feeTierToTickSpacing(feeTier: number): number {
-  if (feeTier == 100) return 1;
-  if (feeTier == 500) return 10;
-  if (feeTier == 3000) return 60;
-  if (feeTier == 10000) return 200;
+  if (feeTier === 100) return 1;
+  if (feeTier === 500) return 10;
+  if (feeTier === 3000) return 60;
+  if (feeTier === 10000) return 200;
   return 0;
 }
 

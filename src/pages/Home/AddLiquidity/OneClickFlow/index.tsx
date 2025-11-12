@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { keccak256, parseUnits } from 'ethers';
+import { parseUnits } from 'ethers';
 import { useAccount, useConfig } from 'wagmi';
 import { switchChain } from 'wagmi/actions';
 import { toast } from 'sonner';
@@ -28,7 +28,6 @@ import TokenSelector from './TokenSelector';
 import SubmitProgress from './SubmitProgress';
 import IncentiveSelector from './IncentiveSelector';
 import { IncentiveKey, Step } from '@/types';
-import { useIncentiveAPR } from '@/hooks/useIncentiveApr';
 import { renderBalance } from '@/utils/render.util';
 
 interface OneClickFlowProps {
