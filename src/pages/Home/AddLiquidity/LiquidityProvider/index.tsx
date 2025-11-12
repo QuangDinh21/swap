@@ -30,6 +30,7 @@ import {
   createPool,
   createPosition,
 } from '@/utils/uniswapUtils';
+import { renderBalance } from '@/utils/render.util';
 
 interface LiquidityProviderProps {
   onLiquidityAdded: () => void;
@@ -213,6 +214,48 @@ export function LiquidityProvider({
     },
   ];
 
+  const handleUsdtAmountChange = useCallback((value: string) => {
+    const usdtAmount = value
+        .replace(/[^0-9.]/g, '') // Removes non-numeric characters or periods
+        .replace(/^0+(\d)/, '$1') // Remove leading 0 unless a decimal number
+        .replace(/^(\.)/, '0$1') // If it starts with a period, add a leading 0
+        .replace(/(\..*?)\./g, '$1') // Only one dot is allowed;
+        .replace(new RegExp(`(\\.\\d{${USDT.decimals}})\\d+`, 'g'), '$1'); // Allow only up to token.decimal
+
+    setUsdtAmount(usdtAmount);
+    if (Number.isNaN(value)) {
+      setJocxAmount('0');
+      return;
+    }
+    const amount = (Number(value) / poolData.jocxPrice)
+    const amountToBigint = parseUnits(amount.toFixed(JOCX.decimals), JOCX.decimals)
+    const toJocxAmount = renderBalance(amountToBigint, { decimals: JOCX.decimals })
+    setJocxAmount(toJocxAmount);
+  }, [poolData.jocxPrice]);
+
+  const handleJocxAmountChange = useCallback((value: string) => {
+    const jocxAmount = value
+        .replace(/[^0-9.]/g, '') // Removes non-numeric characters or periods
+        .replace(/^0+(\d)/, '$1') // Remove leading 0 unless a decimal number
+        .replace(/^(\.)/, '0$1') // If it starts with a period, add a leading 0
+        .replace(/(\..*?)\./g, '$1') // Only one dot is allowed;
+        .replace(new RegExp(`(\\.\\d{${JOCX.decimals}})\\d+`, 'g'), '$1'); // Allow only up to token.decimal
+
+    setJocxAmount(jocxAmount);
+    const price = poolData?.jocxPrice;
+    if (!price) {
+      setUsdtAmount('0');
+      return;
+    }
+
+    const amount = Number(value) * price;
+    if (Number.isNaN(amount)) {
+      setUsdtAmount('0');
+      return;
+    }
+    setUsdtAmount(renderBalance(parseUnits(amount.toFixed(USDT.decimals), USDT.decimals), { decimals: USDT.decimals }));
+  }, [poolData?.jocxPrice]);
+
   return (
     <Card glow>
       <CardHeader
@@ -249,6 +292,7 @@ export function LiquidityProvider({
         <TokenInput
           label="USDT Amount"
           tokenSymbol="USDT"
+          tokenDecimals={USDT.decimals}
           tokenIcon={
             <RealTokenIcon
               symbol="USDT"
@@ -257,21 +301,17 @@ export function LiquidityProvider({
             />
           }
           value={usdtAmount}
-          onChange={(e) => {
-            setUsdtAmount(e.target.value);
-            setJocxAmount(
-              (parseFloat(e.target.value) / poolData.jocxPrice).toFixed(6)
-            );
-          }}
-          balance={parseFloat(usdtBalance).toFixed(2)}
-          onMaxClick={() => setUsdtAmount(usdtBalance)}
-          usdValue={parseFloat(usdtAmount || '0').toFixed(2)}
+          onChange={(e) => handleUsdtAmountChange(e.target.value)}
+          balance={usdtBalance}
+          onMaxClick={() => handleUsdtAmountChange(usdtBalance)}
+          usdValue={usdtAmount}
         />
 
         {/* JOCX Amount */}
         <TokenInput
           label="JOCX Amount"
           tokenSymbol="JOCX"
+          tokenDecimals={JOCX.decimals}
           tokenIcon={
             <RealTokenIcon
               symbol="JOCX"
@@ -280,25 +320,18 @@ export function LiquidityProvider({
             />
           }
           value={jocxAmount}
-          onChange={(e) => {
-            setJocxAmount(e.target.value);
-            setUsdtAmount(
-              (parseFloat(e.target.value) * poolData.jocxPrice).toFixed(6)
-            );
-          }}
-          balance={parseFloat(jocxBalance).toFixed(4)}
-          onMaxClick={() => setJocxAmount(jocxBalance)}
-          usdValue={(
-            parseFloat(jocxAmount || '0') * (poolData ? poolData.jocxPrice : 0)
-          ).toFixed(2)}
+          onChange={(e) => handleJocxAmountChange(e.target.value)}
+          balance={jocxBalance}
+          onMaxClick={() => handleJocxAmountChange(jocxBalance)}
+          usdValue={usdtAmount}
         />
 
         <Button
           onClick={onSubmit}
           disabled={
             !address ||
-            !jocxAmount ||
-            !usdtAmount ||
+            !jocxAmount || jocxAmount === '0' ||
+            !usdtAmount || usdtAmount === '0' ||
             (liquidityMode === 'existing' && !selectedPositionId)
           }
           loading={loading}

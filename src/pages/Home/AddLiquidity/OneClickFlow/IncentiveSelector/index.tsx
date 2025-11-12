@@ -1,14 +1,11 @@
 import { Select } from '@/components/ui';
-import { useMultipleStakedPositionsValue } from '@/hooks/useStakedPositionsValue';
 import { IncentiveKey } from '@/types';
 import {
-  calculateIncentiveAPR,
   formatDate,
   getIncentiveKey,
 } from '@/utils/common';
 import { useIncentiveAPR } from '@/hooks/useIncentiveApr';
 import { keccak256 } from 'ethers';
-import { useMemo } from 'react';
 
 interface IncentiveSelectorProps {
   incentives: IncentiveKey[];

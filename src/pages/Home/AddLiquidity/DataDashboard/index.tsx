@@ -2,7 +2,6 @@ import { usePoolData } from '@/hooks/usePoolData';
 import { useIncentiveStakingData } from '@/hooks/useIncentiveStakingData';
 import { LoadingSkeleton } from '@/components/LoadingSkeleton';
 import {
-  calculateIncentiveAPR,
   formatCurrency,
   getIncentiveKey,
 } from '@/utils/common';
@@ -14,7 +13,6 @@ import {
   ChartIcon,
 } from '@/components/ui';
 import { formatEther, keccak256 } from 'ethers';
-import { useMemo } from 'react';
 import { useIncentiveAPR } from '@/hooks/useIncentiveApr';
 
 interface IncentiveKey {
