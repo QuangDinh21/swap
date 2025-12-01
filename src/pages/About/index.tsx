@@ -4,7 +4,7 @@ function About() {
   return (
     <div>
       <h1>About</h1>
-      <p>Version: {packageJson.version}</p>
+      <h2>Version: {packageJson.version}</h2>
     </div>
   );
 }

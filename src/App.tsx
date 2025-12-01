@@ -1,30 +1,28 @@
-import { BrowserRouter } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { WagmiProvider } from 'wagmi';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import client, { config } from './config/wagmi';
-
 import { ConnectKitProvider } from 'connectkit';
 import { Toaster } from 'sonner';
-import { ApolloProvider } from '@apollo/client';
-import AppRouter from './AppRouter';
+import Home from './pages/Home';
+import About from './pages/About';
+import { getWagmiConfig } from './wagmi/config';
 
 const queryClient = new QueryClient();
 
-function App() {
+const App: React.FC = () => {
   return (
-    <BrowserRouter>
-      <ApolloProvider client={client}>
-        <WagmiProvider config={config}>
-          <QueryClientProvider client={queryClient}>
-            <ConnectKitProvider>
-              <AppRouter />
-              <Toaster position="bottom-right" />
-            </ConnectKitProvider>
-          </QueryClientProvider>
-        </WagmiProvider>
-      </ApolloProvider>
-    </BrowserRouter>
+    <WagmiProvider config={getWagmiConfig()}>
+      <QueryClientProvider client={queryClient}>
+        <ConnectKitProvider>
+          <Routes>
+            <Route path="/about" element={<About />} />
+            <Route path="/" element={<Home />} />
+          </Routes>
+          <Toaster position="top-center" />
+        </ConnectKitProvider>
+      </QueryClientProvider>
+    </WagmiProvider>
   );
-}
+};
 
 export default App;
