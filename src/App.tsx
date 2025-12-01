@@ -1,28 +1,26 @@
-import { Routes, Route } from 'react-router-dom';
-import { WagmiProvider } from 'wagmi';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ConnectKitProvider } from 'connectkit';
-import { Toaster } from 'sonner';
-import Home from './pages/Home';
-import About from './pages/About';
-import { getWagmiConfig } from './wagmi/config';
+import React from 'react';
+import logo from './logo.svg';
+import './App.css';
 
-const queryClient = new QueryClient();
-
-const App: React.FC = () => {
+function App() {
   return (
-    <WagmiProvider config={getWagmiConfig()}>
-      <QueryClientProvider client={queryClient}>
-        <ConnectKitProvider>
-          <Routes>
-            <Route path="/about" element={<About />} />
-            <Route path="/" element={<Home />} />
-          </Routes>
-          <Toaster position="top-center" />
-        </ConnectKitProvider>
-      </QueryClientProvider>
-    </WagmiProvider>
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          Edit <code>src/App.tsx</code> and save to reload.
+        </p>
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
+      </header>
+    </div>
   );
-};
+}
 
 export default App;
