@@ -1,0 +1,9 @@
+query listStakes($incentiveId: Bytes!, $skip: Int!, $first: Int!) {
+  stakeInfos(where: { incentiveId: $incentiveId, staked: true }, skip: $skip, first: $first) {
+    id
+    tokenId
+    liquidity
+    incentiveId
+    staked
+  }
+}
