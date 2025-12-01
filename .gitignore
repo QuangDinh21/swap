@@ -43,7 +43,7 @@ yalc.lock
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
 
-.npmrc
+# .npmrc
 
 .vite
 
