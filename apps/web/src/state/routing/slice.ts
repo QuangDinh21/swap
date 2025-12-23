@@ -179,7 +179,11 @@ export const routingApi = createApi({
             return trace.child({ name: 'Quote on client', op: 'quote.client' }, async () => {
               const { getRouter, getClientSideQuote } = await import('lib/hooks/routing/clientSideSmartOrderRouter')
               const router = getRouter(args.tokenInChainId)
-              const quoteResult = await getClientSideQuote(args, router, args.protocolPreferences ? { protocols: args.protocolPreferences } : CLIENT_PARAMS)
+              const quoteResult = await getClientSideQuote(
+                args,
+                router,
+                args.protocolPreferences ? { protocols: args.protocolPreferences } : CLIENT_PARAMS,
+              )
               if (quoteResult.state === QuoteState.SUCCESS) {
                 const trade = await transformQuoteToTrade(args, quoteResult.data, QuoteMethod.CLIENT_SIDE_FALLBACK)
                 return {
@@ -209,15 +213,13 @@ export const routingApi = createApi({
 export const { useGetQuoteQuery } = routingApi
 export const useGetQuoteQueryState = routingApi.endpoints.getQuote.useQueryState
 
-
 export const jocPriceAPi = createApi({
   reducerPath: 'jocPriceApi',
   baseQuery: fetchBaseQuery(),
   endpoints: (build) => ({
-    getJocPrice: build.query<{ price: number }, { symbol: string, chainId: string, tokenAddress: string }>({
+    getJocPrice: build.query<{ prices: number[] }, { symbol: string; chainId: string; tokenAddress: string }[]>({
       queryFn(args, _api, _extraOptions, fetch) {
         return trace({ name: 'JocPrice', op: 'jocPrice.get', data: { ...args } }, async (trace) => {
-
           const baseUrl = 'https://api.gu.net/v1'
           try {
             return await trace.child({ name: 'JocPrice', op: 'jocPrice.get' }, async () => {
@@ -225,27 +227,21 @@ export const jocPriceAPi = createApi({
                 method: 'GET',
                 url: `${baseUrl}/prices/crypto`,
                 params: {
-                  fsymbols: args.symbol,
+                  fsymbols: args.map((arg) => arg.symbol).join(','),
                   tsymbols: 'USD',
                   types: 'evm',
-                  chainIds: args.chainId,
-                  tokenAddresses: args.tokenAddress,
+                  chainIds: args.map((arg) => arg.chainId).join(','),
+                  tokenAddresses: args.map((arg) => arg.tokenAddress).join(','),
                 },
               })
 
               if (response.error) {
                 throw response.error
               }
-              return { data: { price: (response.data as any)[0]?.price }, latencyMs: trace.now() }
+              return { data: { prices: (response.data as any).map((item: any) => item.price) }, latencyMs: trace.now() }
             })
           } catch (error: any) {
-            logger.warn(
-              'jocPrice/slice',
-              'queryFn',
-              `GetJocPrice failed: ${
-                error?.message ?? error?.detail ?? error
-              }`,
-            )
+            logger.warn('jocPrice/slice', 'queryFn', `GetJocPrice failed: ${error?.message ?? error?.detail ?? error}`)
             trace.setError(error)
             return {
               error: { status: 'CUSTOM_ERROR', error: error?.detail ?? error?.message ?? error },
@@ -263,4 +259,3 @@ export const jocPriceAPi = createApi({
 
 export const { useGetJocPriceQuery } = jocPriceAPi
 export const useGetJocPriceQueryState = jocPriceAPi.endpoints.getJocPrice.useQueryState
-
