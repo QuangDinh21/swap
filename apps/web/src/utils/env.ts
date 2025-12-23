@@ -9,12 +9,15 @@ function isAppUniswapStagingOrg({ hostname }: { hostname: string }): boolean {
 }
 
 export function isBrowserRouterEnabled(): boolean {
+  console.log('isProdEnv: ', isProdEnv())
   if (isProdEnv()) {
+    console.log('isAppUniswapOrg: ', isAppUniswapOrg(window.location))
     if (
       isAppUniswapOrg(window.location) ||
       isAppUniswapStagingOrg(window.location) ||
       isLocalhost(window.location) // cypress tests
     ) {
+      console.log('Here');
       return true
     }
     return false // production builds *not* served through our domains or localhost, eg IPFS
