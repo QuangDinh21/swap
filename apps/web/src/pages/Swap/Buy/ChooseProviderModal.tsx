@@ -73,7 +73,7 @@ function ChooseProviderModalContent({ closeModal }: ChooseProviderModal) {
           </Text>
         </Row>
         <Row justify="right" gap="xs">
-          <GetHelpButton url={uniswapUrls.helpArticleUrls.fiatOnRampHelp} />
+          {/* <GetHelpButton url={uniswapUrls.helpArticleUrls.fiatOnRampHelp} /> */}
           <CloseIcon data-testid="ChooseProviderModal-close" onClick={onClose} />
         </Row>
       </RowBetween>
@@ -83,7 +83,7 @@ function ChooseProviderModalContent({ closeModal }: ChooseProviderModal) {
             key={q.serviceProvider}
             quote={q}
             selectedCountry={selectedCountry}
-            quoteCurrencyCode={quoteCurrencyCode}
+            quoteCurrency={quoteCurrency}
             inputAmount={inputAmount}
             meldSupportedFiatCurrency={meldSupportedFiatCurrency}
             walletAddress={recipientAddress}
