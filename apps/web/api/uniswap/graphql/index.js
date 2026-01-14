@@ -19,7 +19,7 @@ export default async function handler(req, res) {
       {
         method: "POST",
         headers: {
-          origin: "http://localhost:3000",
+          origin: "https://app.uniswap.org",
           "content-type": "application/json",
         },
         body: JSON.stringify(req.body ?? {}),

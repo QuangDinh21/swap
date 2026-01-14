@@ -26,7 +26,7 @@ export default async function handler(req, res) {
     console.log("ENDPOINT:", upstream); // For debugging
   
     try {
-      const headers = { origin: "http://localhost:3000" };
+      const headers = { origin: "https://app.uniswap.org" };
       if (req.method === "POST") headers["content-type"] = "application/json";
   
       // Handle body - ensure it's always a valid object then stringify

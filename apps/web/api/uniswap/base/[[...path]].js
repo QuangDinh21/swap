@@ -23,7 +23,7 @@ export default async function handler(req, res) {
     const upstream = `https://interface.gateway.uniswap.org${restPath}${cleanQuery}`;
   
     try {
-      const headers = { origin: "http://localhost:3000" };
+      const headers = { origin: "https://app.uniswap.org" };
       if (req.method === "POST") headers["content-type"] = "application/json";
   
       const upstreamResp = await fetch(upstream, {
