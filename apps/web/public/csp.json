@@ -93,6 +93,7 @@
     "https://valid.rpki.cloudflare.com",
     "https://vercel.com",
     "https://vercel.live/",
+    "https://*.vercel.app",
     "https://wallet.crypto.com",
     "https://web3.1inch.io",
     "https://mainnet.era.zksync.io/",
