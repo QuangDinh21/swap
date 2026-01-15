@@ -1,10 +1,14 @@
-export default async function handler(req, res) {
-  // Force CORS on every response
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "*");
+const UNISWAP_GRAPHQL_URL = "https://interface.gateway.uniswap.org/v1/graphql";
 
-  // Handle preflight - use 200 not 204
+export default async function handler(req, res) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Vary", "Origin");
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    req.headers["access-control-request-headers"] || "Content-Type,Authorization"
+  );
+
   if (req.method === "OPTIONS") {
     return res.status(200).end();
   }
@@ -15,7 +19,7 @@ export default async function handler(req, res) {
 
   try {
     const upstreamResp = await fetch(
-      "https://interface.gateway.uniswap.org/v1/graphql",
+      UNISWAP_GRAPHQL_URL,
       {
         method: "POST",
         headers: {
@@ -35,4 +39,3 @@ export default async function handler(req, res) {
 }
 
 
-  
